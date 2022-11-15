@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	class="no-js">
+<head>
+<meta charset="UTF-8">
+<title>각종 테스트 페이지</title>
+</head>
+<body>
+	<h1>테스트 페이지 입니다.</h1>
+	<hr>
+	<img alt="" th:src="@{/image/1/uGnphzwpVsD2SD3B_1.jpg}">
+	<br>
+	
+	<body id="image" onload="getImagePathList()">
+		<button onclick = "getImagePathList()">click here</button> 
+	</body>
+	
+	
+	<script type="text/javascript">
+		
+		// userId, imagePath 가져오기
+		async function getImagePathList() { // context_root 뺐음
+		    const targetUrl = "/closet/imagePathList";
+		
+		    let formData = new FormData();
+		    // formData.append('small_category_code'); // 앞에서 선택한 대분류 코드를 넣어준다.
+			
+		    const options = {
+		        method: "post",
+		        body: formData,
+		    }
+			
+		    try {
+		        let response = await fetch(targetUrl, options);
+		        let imagePath_list = await response.json();
+		        console.log(imagePath_list);
+				
+		        for (let item of imagePath_list) {
+		            let img = document.createElement('img');
+		            
+		            img.src = '/image/' + item.userId + '/' + item.imageName;
+		            
+		            document.querySelector('#image').appendChild(img);
+		            //console.log(option.innerText)
+		        }
+		        
+		    } catch (err) {
+		    	console.log(err);
+		    }
+		};
+		
+		
+		
+			
+	</script>
+	
+</body>
+</html>
